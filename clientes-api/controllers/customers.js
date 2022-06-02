@@ -4,53 +4,63 @@ const Customer = require("../dao/customer")(conn);
 exports.createOne = (req, res) => {
   Customer.create(req.body, (id, err) => {
     if(err) {
-      res.status(400).send({ msg: err }); // TODO: 409
+      res.status(400).send({ msg: err });
     } else {
-      res.status(201).send({ id });
+      res.status(201).send({ id, ...req.body });
     }
   });
 };
 
 exports.getAll = (req, res) => {
-
-  Customer.findAll();
-
-  res.status(200).send({ message: "Getting customers..." });
+  Customer.findAll((err, customers) => {
+    if(err) {
+      res.status(400).send({ msg: err });
+    } else {
+      res.status(200).send(customers);
+    }
+  });
 };
 
 exports.getOne = (req, res) => {
-  console.log(req.params);
-  
-  Customer.findOne(req.params.id);
-  
-  res.status(200).send({ message: `Getting customer... ${req.params.id}` });
+  Customer.findOne(req.params.id, (err, customers) => {
+    if(err) {
+      res.status(400).send({ msg: err });
+    } else if(customers.length) {
+      res.status(200).send(customers[0]);
+    } else {
+      res.status(404).send({ msg: `customer not found` });
+    }
+  }); 
 };
 
 exports.changeAllData = (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
+  const data = { id: req.params.id, ...req.body };
 
-  Customer.updateComplete(req.params.id, req.body);
-
-
-  res.status(205).send({ message: `Updating customer... ${req.params.id}` });
+  Customer.updateComplete(data, (err) => {
+    if (err) {
+      res.status(400).send({ msg: err });
+    } else {
+      res.status(204).end();
+    }
+  });
 };
 
 exports.changeOneData = (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
-
-  Customer.updatePartial(req.params.id, req.body);
-
-  res.status(206).send({ message: `Updating customer... ${req.params.id}` });
+  Customer.updatePartial(req.params.id, req.body, (err) => {
+    if (err) {
+      res.status(400).send({ msg: err });
+    } else {
+      res.status(204).end();
+    }
+  });
 };
 
 exports.removeOne = (req, res) => {
-  console.log(req.params);
-
-  Customer.removeOne(req.params.id);
-
-  res.status(204).send({ message: `Deleting customer... ${req.params.id}` });
+  Customer.removeOne(req.params.id, (err) => {
+    if (err) {
+      res.status(400).send({ msg: err });
+    } else {
+      res.status(204).end();
+    }
+  });
 };
-
-
