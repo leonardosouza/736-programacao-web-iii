@@ -11,6 +11,8 @@ class Product {
      const sql = `INSERT INTO products (id, name, price, quantity) VALUES (?, ?, ?, ?);`;
      this.dbConn.run(sql, [ id, name, price, quantity ], callback.bind(this, id));
   }
+
+  
 }
 
 module.exports = (conn) => {

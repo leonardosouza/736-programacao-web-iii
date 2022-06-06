@@ -25,3 +25,19 @@ CREATE TABLE products (
 INSERT INTO products (id, name, price, quantity) VALUES('ABC123', 'Celular', 1850.00, 25);
 
 SELECT * FROM products;
+
+/* ======== */
+
+CREATE TABLE orders (
+  id TEXT NOT NULL,
+  customer_id TEXT NOT NULL,
+  product_id TEXT NOT NULL,
+  date_time TEXT NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES customers (id)
+    ON DELETE CASCADE 
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (product_id) REFERENCES products (id)
+    ON DELETE CASCADE 
+    ON UPDATE NO ACTION
+);
+

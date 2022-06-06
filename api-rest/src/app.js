@@ -12,5 +12,8 @@ app.use("/customers", customers);
 const products = require("../routes/products");
 app.use("/products", products);
 
+const orders = require("../routes/orders");
+app.use("/orders", orders);
+
 // App Listening
 app.listen(5000, () => console.log("Server running at 5000"));
