@@ -1,7 +1,13 @@
 // Importing Modules
 const app = require("express")();
+const { ENV } = require("dotenv").config().parsed;
 
 // Middlewares Config (All Routes)
+if(ENV == "dev") {
+  const cors = require("cors");
+  app.use(cors());
+}
+
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 

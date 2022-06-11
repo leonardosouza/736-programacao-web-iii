@@ -13,7 +13,6 @@ const Customer = require("../models/customer");
 
 exports.getAll = (req, res) => {
   Customer.find((err, customers) => {
-    console.log(customers);
     if(err) {
       res.status(400).send({ msg: err });
     } else {
