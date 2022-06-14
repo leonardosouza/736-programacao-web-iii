@@ -1,9 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const customersCtrl = require("../controllers/customers");
+const { body } = require("express-validator");
 
 // Create a resource
-router.post("/", customersCtrl.createOne);
+router.post("/", 
+  body("name").notEmpty(),
+  body("email").notEmpty().isEmail(),
+  body("cpf").notEmpty().isNumeric(),
+  body("birthday").notEmpty(),
+  body("typeAccount").notEmpty(),
+  customersCtrl.createOne
+);
 
 // Retrieve all resources
 router.get("/", customersCtrl.getAll);
